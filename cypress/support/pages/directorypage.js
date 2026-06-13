@@ -6,12 +6,12 @@ class DirectoryPage {
         jobTitleDropdown: () => cy.get('.oxd-select-text').eq(0), 
         locationDropdown: () => cy.get('.oxd-select-text').eq(1), 
         searchBtn: () => cy.get('button[type="submit"]'),
-        resetBtn: () => cy.get('button[type="button"]').contains('Reset'),
+        resetBtn: () => cy.get('button[type="reset"]'),
         profileCard: () => cy.get('.orangehrm-directory-card'), 
         recordFoundText: () => cy.get('.orangehrm-horizontal-padding > span') 
     }
 
-    // 2. Kumpulan Aksi
+
     navigateToDirectory() {
         this.elements.directoryMenu().click();
     }
@@ -56,7 +56,7 @@ class DirectoryPage {
     }
 
     verifyNoRecordsFound() {
-        this.elements.recordFoundText().should('contain', 'No Records Found');
+        cy.get('.oxd-toast-content').should('contain', 'No Records Found');
     }
 }
 

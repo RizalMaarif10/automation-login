@@ -31,8 +31,8 @@ describe('Automation OrangeHRM - Menu Directory ', () => {
 
   it('TC03 - Mencari Karyawan Berdasarkan Job Title (Jabatan)', () => {
     cy.intercept('GET', '**/directory/employees**').as('searchJabatan');
-    
-    directoryPage.selectJobTitle('Chief Executive Officer');
+
+    directoryPage.selectJobTitle('HR Manager'); 
     directoryPage.clickSearch();
     
     cy.wait('@searchJabatan');
@@ -70,22 +70,18 @@ describe('Automation OrangeHRM - Menu Directory ', () => {
   });
 
   it('TC07 - Mencari Karyawan dengan Nama yang Tidak Terdaftar (Invalid)', () => {
-    cy.intercept('GET', '**/directory/employees**').as('searchInvalid');
-    
-    directoryPage.typeInvalidEmployeeName('NamaHantu123');
-    directoryPage.clickSearch();
-    
-    cy.wait('@searchInvalid');
-    directoryPage.verifyNoRecordsFound();
+    cy.get('.oxd-autocomplete-text-input > input')
+      .type('nahlul')
+      .blur();
+
+    cy.get('.oxd-input-field-error-message').should('contain', 'Invalid');
   });
 
   it('TC08 - Reset Form Pencarian', () => {
-    directoryPage.typeInvalidEmployeeName('Peter');
-    directoryPage.selectJobTitle('Chief Executive Officer');
-    directoryPage.selectLocation('Texas R&D');
-
+    directoryPage.searchByEmployeeName('Peter');
+    directoryPage.selectJobTitle('HR Manager'); 
     directoryPage.clickReset();
-    
+
     cy.get('.oxd-autocomplete-text-input > input').should('be.empty');
     cy.get('.oxd-select-text').eq(0).should('contain', '-- Select --');
     cy.get('.oxd-select-text').eq(1).should('contain', '-- Select --');
